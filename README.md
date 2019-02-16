@@ -4,20 +4,20 @@
 
 generated site code hosted at [https://github.com/DbugTech/dbugtech.github.io](https://github.com/DbugTech/dbugtech.github.io)
 
-# Contrinution guide
-in order to update the site you need to send a (PR) of the version of the site you want
+## Contribution guide (for team members only)
 
 ## how to edit the site on your local machine
 
-- in the src folder is where you'll perform any edits
+- in the `app/src` folder is where you'll perform any edits
+
+- _but before you start editing_
+
 - after cloning for the first time in this root folder of the repo run the following
 
 ```bash
 $ npm install
 ...
 added 76 packages from 109 contributors and audited 20756 packages in 236.433s
-found 7 vulnerabilities (6 moderate, 1 high)
-  run `npm audit fix` to fix them, or `npm audit` for details
 ```
 
 - after installation is complete you can run dev preview with
@@ -25,6 +25,7 @@ found 7 vulnerabilities (6 moderate, 1 high)
 ```bash
 $ gulp watch
 ...
+
 [Browsersync] Access URLs:
  -------------------------------------
        Local: http://localhost:3000
@@ -38,13 +39,13 @@ $ gulp watch
 
 ## how to use
 
-in the repo the `src` folder contains the files that will be compiled to create the final site.
+in the repo the `app/src` folder contains the files that will be compiled to create the final site.
 
 ### partials
 
 partials are reusable snippets of html of the site that you can import to any html file in the src folder
 
-partials are contained in the `src/partials` folder
+partials are contained in the `app/src/partials` folder
 
 to import a partial into a page, you import it using html comments in the following format
 
@@ -53,9 +54,13 @@ to import a partial into a page, you import it using html comments in the follow
 <!-- CALL_THE_PARTIAL -->
 ```
 
-let's say to add the `partials/_head.html` partial file to `home.html` for example you would add the following at the top of the `home.html` file
+let's say to add the `app/src/partials/_head.html` partial file to `app/src/home.html` for example you would add the following at the top of the `src/home.html` file
 
 ```html
 <!-- partial:partials/_head.html -->
 <!-- partial -->
 ```
+
+## Imprtant Note
+
+any file you need to remove from `app/src` please remember to put them in the `app/lib` folder
