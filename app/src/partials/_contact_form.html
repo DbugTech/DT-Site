@@ -1,0 +1,50 @@
+                        <div class="contactFormWrapper ">
+                            <form id="contactform" action="/assets/php/submit.php" method="post" novalidate>
+                                <div class="row">
+                                    <div class="col-12 col-lg-6">
+                                        <label for="name">Name</label>
+                                        <input type="text" class="form-control" id="name" placeholder="" required>
+                                        <div class="invalid-feedback">
+                                            Please enter your name.
+                                        </div>
+                                    </div>
+                                    <div class="col-12 col-lg-6">
+                                        <label for="subject" class="required">Subject</label>
+                                        <input type="text" class="form-control" id="subject" placeholder="" required>
+                                        <div class="invalid-feedback">
+                                            Please enter subject.
+                                        </div>
+                                    </div>
+                                    <div class="col-12">
+                                        <label for="company">Company Name</label>
+                                        <input type="text" class="form-control" id="company" placeholder="">
+                                    </div>
+                                    <div class="col-12 col-lg-6">
+                                        <label for="email" class="required">Email Address</label>
+                                        <input type="email" class="form-control" id="email" placeholder="" required>
+                                        <div class="invalid-feedback">
+                                            Please enter email.
+                                        </div>
+                                    </div>
+                                    <div class="col-12 col-lg-6">
+                                        <label for="phone" class="required">Tel/Mob</label>
+                                        <input class="form-control" type="text" name="phone" id="phone">
+                                    </div>
+                                </div>
+                                <label for="message" class="required">Message</label>
+                                <textarea placeholder="Message" name="message" id="message" class="form-control"
+                                    required>
+                                </textarea>
+                                <div class="invalid-feedback">
+                                    Please enter message.
+                                </div>
+                                <div class="text-right p-t-20">
+                                    <button class="btn btn-primary btn-lg"><i class="icon icon-envelope-o"></i> Send
+                                        Message
+                                    </button>
+                                </div>
+                            </form>
+                            <div class="p-t-b-20">
+                                <div id="valid-issue" class="alert" style="display:none;"></div>
+                            </div>
+                        </div>

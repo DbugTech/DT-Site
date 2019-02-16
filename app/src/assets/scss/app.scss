@@ -1,0 +1,65 @@
+/**
+ *
+ *  Command : gulp watch or gulp styles
+ *
+ */
+//Core Or Common SCSS both for front end and panel
+@import "../scss/common";
+
+@import '../scss/libs/animated-headline';
+/*
+ * Basic or Must have Elements
+ * You might not want to comment or delete them
+ */
+
+@import "basic/nav";
+@import "basic/navDefault";
+@import "basic/preHeader";
+@import "basic/figure";
+@import "basic/hero";
+@import "basic/breadcrumbs";
+@import "basic/comments";
+@import "basic/pageHeader";
+@import "basic/footer";
+@import "basic/dividers";
+@import "_widgets";
+@import "basic/pre_header";
+@import "templates/home";
+@import "templates/topics";
+@import "basic/icon";
+@import "templates/blog";
+//Components
+@import "components/_testimonials";
+@import "templates/events";
+@import "components/pricing";
+/*
+ * Templates Specific Styles
+ */
+@import "templates/product";
+@import "templates/template-contact";
+@import "templates/template-resume";
+@import "templates/template-shop";
+@import "templates/template-error";
+
+/*
+ * Components
+ */
+@import "components/xvslider";
+@import "components/portfolio-filter";
+@import "components/timeline";
+@import "components/contactBar";
+@import "components/mokupSlider";
+@import "components/services";
+@import "components/lightSlider";
+@import "components/knob";
+@import "components/counter";
+@import "components/sticky";
+@import "components/parallax";
+@import "components/heroVideo";
+@import "components/callToAction";
+// PAPER VEVERSION : 1.2
+//@import "components/promotionsBar";
+////should be at end to override styles
+//@import "basic/helper";
+//@import "kit/colors";
+@import "templates/single"; //Blog Single Page

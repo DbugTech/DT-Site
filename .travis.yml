@@ -1,0 +1,17 @@
+language: node_js
+node_js: "8"
+before_script:
+  - npm install -g gulp-cli
+  - npm install
+script:
+  - gulp production-min
+deploy:
+  provider: pages
+  target-branch: master
+  skip-cleanup: true
+  local_dir: app/dist/
+  repo: DbugTech/dbugtech.github.io
+  github-token: $MAROOF_PERSONAL_ACCESS_TOKEN
+  keep-history: true
+  on:
+    branch: master

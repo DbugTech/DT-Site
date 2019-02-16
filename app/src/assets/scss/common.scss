@@ -1,0 +1,30 @@
+//// Necessary Modules
+@import 'basic/variables';
+//// colors, fonts etc...
+@import "bootstrap/bootstrap";
+
+@import '../scss/libs/paperIcons';
+@import '../scss/libs/roboto';
+@import '../scss/libs/animations';
+
+//// Extra Modules
+@import "../scss/libs/lightslider";
+/*
+ * Should be at top of all other
+ */
+@import "basic/responsive-helper";
+@import 'basic/mixins';
+@import "basic/icon";
+@import "basic/base";
+@import "all";
+@import "basic/preloader";
+@import "components/counter";
+@import "components/_forms";
+@import "basic/social";
+@import "components/sidebarMenu";
+@import "components/shortcodes";
+
+@import "components/promotionsBar";
+//should be at end to override styles
+@import "basic/helper";
+@import "kit/colors";
