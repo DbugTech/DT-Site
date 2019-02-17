@@ -1,7 +1,6 @@
 //Gulp Packages =============================================
 var fs = require('fs-extra');
 var app = JSON.parse(fs.readFileSync('./package.json'));
-var ftp = JSON.parse(fs.readFileSync('./ftp.config'));
 
 var gulp = require('gulp'),
     webpack = require('gulp-webpack'),
@@ -20,16 +19,8 @@ var gulp = require('gulp'),
     del = require('del'),
     zip = require('gulp-zip'),
     gutil = require('gulp-util'),
-    vinylFtp = require('vinyl-ftp'),
     named = require('vinyl-named');
 
-var tf = {
-    zipSrc: 'tf/',
-    zipDist: 'tf-upload/',
-    root: 'tf/' + app.slug + '/development-version/',
-    app: 'tf/' + app.slug + '/development-version/app/',
-    app_production: 'tf/' + app.slug + '/production-version/'
-};
 
 var paths = {
     src: 'app/src/**/*',
@@ -80,11 +71,6 @@ var sassOptions = {
     outputStyle: 'expanded'
 };
 
-
-// html task =============================================
-gulp.task('test', function () {
-    console.log(ftp.server.host);
-});
 
 
 // html task =============================================
@@ -323,30 +309,12 @@ gulp.task('clean:dist', function () {
 });
 
 
+
 /*---------------------------------------
  Command: gulp production
  Description: Create production version
  ---------------------------------------- */
 
-
-
-
-
-
-
-/*---------------------------------------
- Command: gulp deploy
- Description: Create final minified version & upload to server
- -
- ---------------------------------------- */
-
-gulp.task('clean:demo-folder', function () {
-    return del(bases.demoFolder + '**', {force: true});
-});
-gulp.task('make-demo', gulp.series(['clean:demo-folder'], function () {
-    return gulp.src(bases.dist + '**')
-        .pipe(gulp.dest(bases.demoFolder));
-}));
 
 
 gulp.task('production', gulp.series(
@@ -361,6 +329,13 @@ gulp.task('production', gulp.series(
     'videos:dist'
 ));
 
+
+/*---------------------------------------
+ Command: gulp production-min
+ Description: Create production version
+ ---------------------------------------- */
+
+
 gulp.task('production-min', gulp.series(
     'clean:dist',
     'html:dist-min',
@@ -373,119 +348,10 @@ gulp.task('production-min', gulp.series(
     'videos:dist'
 ));
 
-gulp.task('demo', gulp.series(
-    'production-min',
-    'previews-resize',
-    'img-compress',
-    'make-demo'
-));
-
-/*---------------------------------------
- Command: gulp tf
- Description: Create final tf version & upload to server on for envato authors.
- -
- ---------------------------------------- */
-gulp.task('clean:tf', function () {
-    return del(tf.zipSrc + '**', {force: true});
-});
-
-gulp.task('clean:tf-zip', function () {
-    return del(tf.zipDist + '**', {force: true});
-});
-
-gulp.task('tf-zip', gulp.series(['clean:tf-zip'], function () {
-    return gulp.src(tf.zipSrc + '**')
-        .pipe(zip(app.slug + '-' + app.version + '-all-files.zip'))
-        .pipe(gulp.dest(tf.zipDist))
-}));
 
 
-var $conent = '{\r\n  \"server\": {\r\n    \"host\": \"ENTER YOUR HOST NAME\",\r\n    \"user\": \"ENTER YOUR USER NAME\",\r\n    \"pass\": \"ENTER YOUR PASSWORD\",\r\n    \"port\": \"21\",\r\n    \"path\": \"\/public_html\/\"\r\n  }\r\n}\r\n';
-
-var $documentation = 'Kindly check documentations.html in app\/dist folder for help.\r\n\r\n\r\nFor online docs visit\r\n\r\nhttp:\/\/xvelopers.com\/html\/paper\/documentations.html';
-
-
-gulp.task('tf-upload', function () {
-    var conn = vinylFtp.create({
-        host: ftp.tf.host,
-        user: ftp.tf.user,
-        password: ftp.tf.pass,
-        parallel: 3,
-        log: gutil.log
-    });
-    var globs = [
-        'tf-upload/' + '**'
-    ];
-    // using base = '.' will transfer everything to /public_html correctly
-    // turn off buffering in gulp.src for best performance
-    return gulp.src(globs, {buffer: false})
-        .pipe(conn.newer(ftp.tf.path)) // only upload newer files
-        .pipe(conn.dest(ftp.tf.path));
-});
 function cb (err,data) {
     if (err) {
         return console.log(err);
     }
 }
-
-gulp.task('tf-version', gulp.series(['clean:tf', 'production', 'placeholder', 'previews-resize', 'img-compress'], function () {
-    gulp.src('gulpfile.js')
-        .pipe(gulp.dest(tf.root));
-    gulp.src('package.json')
-        .pipe(gulp.dest(tf.root));
-
-    fs.outputFile(tf.root + 'ftp.config', $conent, cb);
-
-    fs.outputFile(tf.zipSrc + 'Documentation/help.txt', $documentation, cb);
-
-    //development version
-    gulp.src(bases.app + '**')
-        .pipe(gulp.dest(tf.app + 'src'));
-
-    //production version
-    gulp.src(bases.dist + '**')
-        .pipe(gulp.dest(tf.app_production));
-
-    //Replace compress and placeholder images from dist to src folder
-    del(tf.app + 'src/assets/img/**/*', {force: true});
-
-    return gulp.src(tf.app + 'dist/assets/img/**/*')
-        .pipe(gulp.dest(tf.app + 'src/assets/img/**/*'));
-
-}));
-
-gulp.task('tf', gulp.series(
-    'tf-version',
-    'tf-zip',
-    'tf-upload',
-    'clean:tf',
-    'clean:tf-zip'
-));
-
-// CREATE DEMO VERSION
-
-gulp.task('upload', function () {
-    var conn = vinylFtp.create({
-        host: ftp.server.host,
-        user: ftp.server.user,
-        password: ftp.server.pass,
-        parallel: 3,
-        log: gutil.log
-    });
-    var globs = [
-        bases.demoFolder + '**'
-    ];
-    // using base = '.' will transfer everything to /public_html correctly
-    // turn off buffering in gulp.src for best performance
-    return gulp.src(globs, {base: '.', buffer: false})
-        .pipe(conn.newer(ftp.server.path)) // only upload newer files
-        .pipe(conn.dest(ftp.server.path));
-});
-
-
-gulp.task('deploy', gulp.series(
-    'default',
-    'demo',
-    'upload',
-    'clean:demo-folder'
-));
